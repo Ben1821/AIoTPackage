@@ -1,0 +1,136 @@
+//
+//  PackageCardView.swift
+//  AIoTPackage
+//
+//  Created by 葉韋坪 on 2026/2/21.
+//
+
+import SwiftUI
+import CodeScanner
+internal import AVFoundation
+
+struct PackageRow: View {
+    let package: PackageModel
+    let mainColor: Color = Color(hue: 186/360, saturation: 1, brightness: 78/100)
+    let subColor: Color = Color(hue: 220/360, saturation: 16/100, brightness: 50/100)
+    @State private var isShowingScanner: Bool = false
+    @State private var correct: Bool = false
+    @State var path = NavigationPath()
+    var body: some View {
+        NavigationStack(path: $path){
+            VStack(alignment: .leading, spacing: 0) {
+                HStack {
+                    Text("#\(package.code)")
+                        .foregroundStyle(mainColor)
+                        .font(.system(size: 15, weight: .semibold))
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, 4)
+                        .background(mainColor.opacity(0.1))
+                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                    Text(package.timeText)
+                        .font(.system(size: 15, weight: .medium))
+                        .foregroundColor(.gray)
+                    Spacer()
+                    Text(correct ? "True" : "False")
+                        .foregroundStyle(correct ? .green : .red)
+                }
+                .padding(.bottom, 12)
+                
+                HStack(alignment: .top, spacing: 16) {
+                    
+                    RoundedRectangle(cornerRadius: 16)
+                        .foregroundStyle(subColor.opacity(0.5))
+                        .frame(width: 56, height: 56)
+                        .overlay{
+                            Image(systemName: "cube.box.fill")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 28, height: 28)
+                                .foregroundColor(.white)
+                        }
+                    
+                    VStack(alignment: .leading, spacing: 0) {
+                        Text(package.title)
+                            .font(.title3).bold()
+                            .foregroundColor(mainColor)
+                        
+                        Text("管理員：\(package.manager)")
+                            .font(.system(size: 15, weight: .medium))
+                            .foregroundColor(subColor.opacity(0.5))
+                        
+                        Label("\(package.cabinet) - 第\(package.floor)層", systemImage: "cabinet.fill")
+                            .foregroundColor(mainColor)
+                            .padding(.top, 8)
+                    }
+                    Spacer()
+                }
+                .padding(.bottom, 8)
+                
+                Divider()
+                
+                HStack{
+                    Spacer()
+                    Button {
+                        isShowingScanner.toggle()
+                    } label: {
+                        Label("取貨", systemImage: "barcode.viewfinder")
+                            .font(.title3)
+                            .padding(.horizontal, 12)
+                            .padding(.vertical, 8)
+                            .background(mainColor)
+                            .foregroundColor(.white)
+                            .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+                    }
+                }
+                .padding(.top)
+            }
+            .navigationDestination(for: PackageModel.self) { package in
+                PackageDetail(package: package)
+                    .navigationTitle("#\(package.code)")
+            }
+            .padding()
+            .background(
+                RoundedRectangle(cornerRadius: 26, style: .continuous)
+                    .fill(.white)
+                    .shadow(color: Color.black.opacity(0.16),
+                            radius: 10, x: 0, y: 2)
+            )
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.vertical, 8)
+            .padding(.horizontal)
+            .sheet(isPresented: $isShowingScanner) {
+                CodeScannerView(
+                    codeTypes: [.code128],                 // 依你的條碼格式調整
+                    showViewfinder: true,
+                    simulatedData: package.barCode,      // 模擬值：方便在 Simulator 測試
+                    completion: handleScan
+                )
+            }
+        }
+    }
+    
+    // 一定要在 struct 裡「外面」宣告，不要放在 body 裡
+    private func handleScan(result: Result<ScanResult, ScanError>) {
+        isShowingScanner = false
+        
+        switch result {
+        case .success(let scanResult):
+            let value = scanResult.string
+            guard value == package.barCode else {
+                correct = false
+                return
+            }
+            
+            correct = true
+            path.append(package)
+            
+        case .failure(let error):
+            print("Scanning failed: \(error.localizedDescription)")
+        }
+    }
+}
+
+
+#Preview {
+    PackageRow(package: PackageModel(code: "", timeText: "", title: "", manager: "", cabinet: "", floor: "", barCode: "1234"))
+}
