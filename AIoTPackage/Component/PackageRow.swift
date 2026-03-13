@@ -12,6 +12,7 @@ internal import AVFoundation
 struct PackageRow: View {
     let package: PackageModel
     @State private var isShowingScanner: Bool = false
+    // var onScanResult: (String) -> Void
     @State private var correct: Bool = false
     @State var path = NavigationPath()
     var body: some View {
