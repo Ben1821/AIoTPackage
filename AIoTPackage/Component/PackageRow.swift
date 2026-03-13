@@ -11,8 +11,6 @@ internal import AVFoundation
 
 struct PackageRow: View {
     let package: PackageModel
-    let mainColor: Color = Color(hue: 186/360, saturation: 1, brightness: 78/100)
-    let subColor: Color = Color(hue: 220/360, saturation: 16/100, brightness: 50/100)
     @State private var isShowingScanner: Bool = false
     @State private var correct: Bool = false
     @State var path = NavigationPath()
@@ -21,11 +19,11 @@ struct PackageRow: View {
             VStack(alignment: .leading, spacing: 0) {
                 HStack {
                     Text("#\(package.code)")
-                        .foregroundStyle(mainColor)
+                        .foregroundStyle(Color("mainColor"))
                         .font(.system(size: 15, weight: .semibold))
                         .padding(.horizontal, 8)
                         .padding(.vertical, 4)
-                        .background(mainColor.opacity(0.1))
+                        .background(Colors.mainColor.opacity(0.1))
                         .clipShape(RoundedRectangle(cornerRadius: 10))
                     Text(package.timeText)
                         .font(.system(size: 15, weight: .medium))
@@ -39,7 +37,7 @@ struct PackageRow: View {
                 HStack(alignment: .top, spacing: 16) {
                     
                     RoundedRectangle(cornerRadius: 16)
-                        .foregroundStyle(subColor.opacity(0.5))
+                        .foregroundStyle(Colors.subColor.opacity(0.5))
                         .frame(width: 56, height: 56)
                         .overlay{
                             Image(systemName: "cube.box.fill")
@@ -52,14 +50,14 @@ struct PackageRow: View {
                     VStack(alignment: .leading, spacing: 0) {
                         Text(package.title)
                             .font(.title3).bold()
-                            .foregroundColor(mainColor)
+                            .foregroundColor(Colors.mainColor)
                         
                         Text("管理員：\(package.manager)")
                             .font(.system(size: 15, weight: .medium))
-                            .foregroundColor(subColor.opacity(0.5))
+                            .foregroundColor(Colors.subColor.opacity(0.5))
                         
                         Label("\(package.cabinet) - 第\(package.floor)層", systemImage: "cabinet.fill")
-                            .foregroundColor(mainColor)
+                            .foregroundColor(Colors.mainColor)
                             .padding(.top, 8)
                     }
                     Spacer()
@@ -77,7 +75,7 @@ struct PackageRow: View {
                             .font(.title3)
                             .padding(.horizontal, 12)
                             .padding(.vertical, 8)
-                            .background(mainColor)
+                            .background(Colors.mainColor)
                             .foregroundColor(.white)
                             .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
                     }

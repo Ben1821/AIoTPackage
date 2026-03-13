@@ -8,15 +8,12 @@
 import SwiftUI
 
 struct PackageView: View {
-    let mainColor: Color = Color(hue: 186/360, saturation: 1, brightness: 78/100)
-    let subColor: Color = Color(hue: 220/360, saturation: 16/100, brightness: 50/100)
-    
     @State private var selectedTab: PackageSegment = .ToBePicked
     @Namespace private var animation
     var body: some View {
         VStack{
             Rectangle()
-                .foregroundStyle(mainColor)
+                .foregroundStyle(Colors.mainColor)
                 .frame(height: 63)
             ZStack{
                 selectedTab.displayView
@@ -27,13 +24,13 @@ struct PackageView: View {
                                 ForEach(PackageSegment.allCases, id: \.self){ item in
                                     ZStack{
                                         Text(item.title)
-                                            .foregroundStyle(selectedTab == item ? mainColor : subColor)
+                                            .foregroundStyle(selectedTab == item ? Colors.mainColor : Colors.subColor)
                                             .font(.system(size: 21 - CGFloat(PackageSegment.allCases.count - 1)))
                                             .frame(width: (geom.size.width - 40) / CGFloat(PackageSegment.allCases.count))
                                         
                                         if selectedTab == item{
                                             Capsule()
-                                                .foregroundStyle(mainColor)
+                                                .foregroundStyle(Colors.mainColor)
                                                 .frame(height: 3)
                                                 .matchedGeometryEffect(id: "showLine", in: animation)
                                                 .frame(width: (geom.size.width - 20) / CGFloat(PackageSegment.allCases.count + 1))
@@ -48,7 +45,7 @@ struct PackageView: View {
                                 }
                             }
                             Capsule()
-                                .foregroundStyle(subColor.opacity(0.1))
+                                .foregroundStyle(Colors.subColor.opacity(0.1))
                                 .frame(height: 2)
                                 .offset(y: geom.size.height * 0.022)
                         }

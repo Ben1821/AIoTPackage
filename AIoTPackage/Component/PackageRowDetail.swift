@@ -9,17 +9,15 @@ import SwiftUI
 
 struct PackageRowDetail: View {
     let package: PackageModel
-    let mainColor: Color = Color(hue: 186/360, saturation: 1, brightness: 78/100)
-    let subColor: Color = Color(hue: 220/360, saturation: 16/100, brightness: 50/100)
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             HStack(alignment: .top){
                 VStack(alignment: .leading, spacing: 0){
                     Text("包裹ID")
-                        .foregroundStyle(subColor)
+                        .foregroundStyle(Colors.subColor)
                         .font(.system(size: 15))
                     Text("#\(package.code)")
-                        .foregroundStyle(mainColor)
+                        .foregroundStyle(Colors.mainColor)
                         .font(.title3).fontWeight(.semibold)
                 }
                 Spacer()
@@ -28,11 +26,11 @@ struct PackageRowDetail: View {
                         .frame(width: 8)
                     Text("待領取")
                 }
-                .foregroundStyle(mainColor)
+                .foregroundStyle(Colors.mainColor)
                 .padding(8)
                 .background{
                     Capsule()
-                        .foregroundStyle(mainColor.opacity(0.1))
+                        .foregroundStyle(Colors.mainColor.opacity(0.1))
                 }
                 
             }
@@ -43,7 +41,7 @@ struct PackageRowDetail: View {
                 HStack(alignment: .top, spacing: 16) {
                     
                     RoundedRectangle(cornerRadius: 16)
-                        .foregroundStyle(subColor.opacity(0.5))
+                        .foregroundStyle(Colors.subColor.opacity(0.5))
                         .frame(width: 56, height: 56)
                         .overlay{
                             Image(systemName: "cube.box.fill")
@@ -56,11 +54,11 @@ struct PackageRowDetail: View {
                     VStack(alignment: .leading, spacing: 0) {
                         Text(package.title)
                             .font(.title3).bold()
-                            .foregroundColor(mainColor)
+                            .foregroundColor(Colors.mainColor)
                         
                         Text("管理員：\(package.manager)")
                             .font(.system(size: 15, weight: .medium))
-                            .foregroundColor(subColor.opacity(0.5))
+                            .foregroundColor(Colors.subColor.opacity(0.5))
                         
                         
                     }
@@ -70,16 +68,16 @@ struct PackageRowDetail: View {
                 HStack{
                     VStack(alignment: .leading){
                         Text("貨物位置")
-                            .foregroundColor(subColor.opacity(0.5))
+                            .foregroundColor(Colors.subColor.opacity(0.5))
                         Label("\(package.cabinet) - 第\(package.floor)層", systemImage: "cabinet.fill")
-                            .foregroundColor(mainColor)
+                            .foregroundColor(Colors.mainColor)
                     }
                     Spacer()
                     VStack(alignment: .leading){
                         Text("抵達時間")
-                            .foregroundColor(subColor.opacity(0.5))
+                            .foregroundColor(Colors.subColor.opacity(0.5))
                         Text(package.timeText)
-                            .foregroundStyle(subColor)
+                            .foregroundStyle(Colors.subColor)
                             .font(.title3)
                     }
                     Spacer()
@@ -89,7 +87,7 @@ struct PackageRowDetail: View {
                 // action
             } label: {
                 RoundedRectangle(cornerRadius: 10, style: .continuous)
-                    .fill(mainColor)
+                    .fill(Colors.mainColor)
                     .frame(maxWidth: .infinity, maxHeight: 56)
                     .overlay{
                         Label("取貨", systemImage: "barcode.viewfinder")
