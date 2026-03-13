@@ -11,7 +11,7 @@ import SwiftUI
 struct AIoTPackageApp: App {
     var body: some Scene {
         WindowGroup {
-            PackageView()
+            RootView()
         }
     }
 }
